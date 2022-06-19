@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/kernelsafe/weather-api/pkg/util"
+	"github.com/kernelsafe/weather-api-go/pkg/util"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"

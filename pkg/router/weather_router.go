@@ -3,9 +3,9 @@ package router
 import (
 	"net/http"
 
-	"github.com/kernelsafe/weather-api/pkg/model"
-	"github.com/kernelsafe/weather-api/pkg/service"
-	"github.com/kernelsafe/weather-api/pkg/db"
+	"github.com/kernelsafe/weather-api-go/pkg/db"
+	"github.com/kernelsafe/weather-api-go/pkg/model"
+	"github.com/kernelsafe/weather-api-go/pkg/service"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"compress/flate"
 	"log"
 	"net/http"
 
@@ -8,9 +9,9 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
 	"github.com/go-chi/render"
-	"github.com/kernelsafe/weather-api/pkg/db"
-	"github.com/kernelsafe/weather-api/pkg/router"
-	"github.com/kernelsafe/weather-api/pkg/util"
+	"github.com/kernelsafe/weather-api-go/pkg/db"
+	"github.com/kernelsafe/weather-api-go/pkg/router"
+	"github.com/kernelsafe/weather-api-go/pkg/util"
 )
 
 // Routes returns all routes
@@ -27,7 +28,7 @@ func Routes() *chi.Mux {
 	root.Use(
 		render.SetContentType(render.ContentTypeJSON),
 		middleware.Logger,
-		middleware.DefaultCompress,
+		middleware.Compress(flate.DefaultCompression),
 		middleware.RedirectSlashes,
 		middleware.Recoverer,
 		cors.Handler,
