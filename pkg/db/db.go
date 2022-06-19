@@ -34,7 +34,7 @@ func GetClient() *mongo.Client {
 	defer cancel()
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(util.GetEnv(dbHost, "mongodb://localhost:27017")))
 	check(err)
-	DBName = util.GetEnv(dbName, "weathier-api")
+	DBName = util.GetEnv(dbName, "weather-api")
 	err = client.Ping(ctx, readpref.Primary())
 	check(err)
 	return client
