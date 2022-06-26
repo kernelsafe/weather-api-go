@@ -14,11 +14,13 @@ import (
 )
 
 const collectionName = "weather"
+var collection *mongo.Collection
 
 // WeatherRoutes returns all Weather's endpoints
 func WeatherRoutes(dbClient *mongo.Client) *chi.Mux {
 	router := chi.NewRouter()
-
+	collection = dbClient.Database(db.DBName).Collection(collectionName)
+	service.SetCollection(collection)
 	router.Get("/{id}", func(w http.ResponseWriter, r *http.Request) {
 		id := chi.URLParam(r, "id")
 		if id == "" {
@@ -30,7 +32,7 @@ func WeatherRoutes(dbClient *mongo.Client) *chi.Mux {
 			http.Error(w, "invalid id!", http.StatusBadRequest)
 			return
 		}
-		res, err := service.GetOne(dbClient, collectionName, objID)
+		res, err := service.GetOne(objID)
 
 		if err != nil || res == nil {
 			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
@@ -40,7 +42,7 @@ func WeatherRoutes(dbClient *mongo.Client) *chi.Mux {
 	})
 
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		res, err := service.GetAll(dbClient, collectionName)
+		res, err := service.GetAll()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -60,7 +62,7 @@ func WeatherRoutes(dbClient *mongo.Client) *chi.Mux {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		res, err = service.GetOne(dbClient, collectionName, res.(primitive.ObjectID))
+		res, err = service.GetOne(res.(primitive.ObjectID))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -80,13 +82,13 @@ func WeatherRoutes(dbClient *mongo.Client) *chi.Mux {
 			return
 		}
 
-		res, err := service.GetOne(dbClient, collectionName, objID)
+		res, err := service.GetOne(objID)
 
 		if err != nil || res == nil {
 			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 			return
 		}
-		err = service.DeleteOne(dbClient, collectionName, objID)
+		err = service.DeleteOne(objID)
 		if err != nil {
 			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 			return

@@ -11,9 +11,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var collection *mongo.Collection
+
+func SetCollection(newCollection *mongo.Collection) {
+	collection = newCollection
+}
 // GetOne returns one item
-func GetOne(client *mongo.Client, collectionName string, id primitive.ObjectID) (*model.WeatherResponse, error) {
-	collection := client.Database(db.DBName).Collection(collectionName)
+func GetOne(id primitive.ObjectID) (*model.WeatherResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), db.TimeOut)
 	defer cancel()
 	res := &model.WeatherResponse{}
@@ -26,8 +30,7 @@ func GetOne(client *mongo.Client, collectionName string, id primitive.ObjectID) 
 }
 
 // DeleteOne deletes one item
-func DeleteOne(client *mongo.Client, collectionName string, id primitive.ObjectID) error {
-	collection := client.Database(db.DBName).Collection(collectionName)
+func DeleteOne(id primitive.ObjectID) error {
 	ctx, cancel := context.WithTimeout(context.Background(), db.TimeOut)
 	defer cancel()
 	_, err := collection.DeleteOne(ctx, bson.M{"_id": id})
@@ -35,8 +38,7 @@ func DeleteOne(client *mongo.Client, collectionName string, id primitive.ObjectI
 }
 
 // InsertOne inserts one item
-func InsertOne(client *mongo.Client, collectionName string, doc model.WeatherRequest) error {
-	collection := client.Database(db.DBName).Collection(collectionName)
+func InsertOne(doc model.WeatherRequest) error {
 	ctx, cancel := context.WithTimeout(context.Background(), db.TimeOut)
 	defer cancel()
 	_, err := collection.InsertOne(ctx, doc)
@@ -44,8 +46,7 @@ func InsertOne(client *mongo.Client, collectionName string, doc model.WeatherReq
 }
 
 // GetAll returns all items
-func GetAll(client *mongo.Client, collectionName string) ([]*model.WeatherResponse, error) {
-	collection := client.Database(db.DBName).Collection(collectionName)
+func GetAll() ([]*model.WeatherResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), db.TimeOut)
 	defer cancel()
 	findOptions := options.Find()
