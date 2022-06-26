@@ -18,7 +18,7 @@ const (
 	dbHost = "DB_HOST"
 	dbName = "DB_NAME"
 	// TimeOut of the connection
-	TimeOut = 5 * time.Second
+	TimeOut = 10 * time.Second
 )
 
 func check(e error) {
